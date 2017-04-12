@@ -1,6 +1,6 @@
 <template>
     <div>
-      <el-button @click="visible = true">{{btnMsg}}</el-button>
+      <el-button @click="visible = true" type="primary">{{btnMsg}}</el-button>
       <el-dialog v-model="visible" title="Hello World">
         <p>欢迎使用Element</p>
       </el-dialog>
