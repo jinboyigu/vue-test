@@ -2,8 +2,8 @@
   <div>
     <el-tree
      :data="treeData"
-     show-checkbox
-     node-key="id"
+     :show-checkbox="true"
+     node-key="email"
     >
     </el-tree>
   </div>
@@ -11,26 +11,54 @@
 <style>
 </style>
 <script>
-  import {commonFetch} from '@/service/fetch'
+  import {init, commonFetch} from '@/service/fetch'
   export default {
     data () {
       return {
         treeData: [],
-        url: '',
+        url: '/ecmedm/rest/v1/recvList/orgUnitList',
         init: {
-          method: 'GET',
-          headers: {
-            'ECMEDM-SID':'A8F975ED32BA469F8FABA0A7A657F043'
-          }
+          method: 'GET'
         }
       }
+    },
+    mounted () {
+      let self = this
+      self.getData()
     },
     methods: {
       getData () {
         let self = this
-        commonFetch(self.url, self.init).then(result => {
-
+        commonFetch(self.url, init(self.init)).then(result => {
+//         处理组织部门
+          let orgList = JSON.parse(result.result.data)
+          orgList.name = '组织部门'
+          self.formatObj(orgList)
+          self.treeData.push(orgList)
+//          处理邮件列表
+          result.result.groupList.forEach(item => {
+            item.label = item.name
+          })
+          let groupList = {
+            email: 'groupList',
+            label: '邮件列表',
+            children: result.result.groupList
+          }
+          self.treeData.push(groupList)
+        }).catch(result => {
+          console.log(result)
         })
+      },
+      formatObj (obj) {
+        let self = this
+        obj.label = obj.name
+        if (obj.hasOwnProperty('ou')) {
+          obj.children = obj.ou
+          delete obj.ou
+          obj.children.forEach(item => {
+            self.formatObj(item)
+          })
+        }
       }
     }
   }

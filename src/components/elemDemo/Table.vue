@@ -52,7 +52,7 @@
   @import "../../style/table.less";
 </style>
 <script>
-  import {commonFetch} from '@/service/fetch'
+  import {init, commonFetch} from '@/service/fetch'
   import appFunc from '@/service/appFunc'
   import Vue from 'vue'
   export default {
@@ -118,20 +118,14 @@
       },
       getData () {
         let self = this
-        let init = {
-          method: 'GET',
-          headers: {
-            'ECMEDM-SID':'A8F975ED32BA469F8FABA0A7A657F043'
-          }
-        }
         let url = self.GET_URL
         url = `${url}?page=${self.params.page}&size=${self.params.size}&sort=${self.params.sort}&order=${self.params.order}&tabledesc=${self.params.tabledesc}`
-        commonFetch(url, init).then((result) => {
+        commonFetch(url, init({method: 'GET'})).then((result) => {
           self.tableData = result.result.data
           self.params.total = result.result.total
-//          self.$set(self.params, 'total', result.result.total)
           self.nextDisabled = (self.params.page + 1) * self.params.size > self.params.total
-//          self.params.total = result.result.total
+        }).catch(result => {
+          console.log(result)
         })
       },
       changeTableData (action) {

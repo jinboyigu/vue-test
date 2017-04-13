@@ -9,6 +9,7 @@ import Tooltip from '@/components/elemDemo/Tooltip'
 import Table from '@/components/elemDemo/Table'
 import Pagination from '@/components/elemDemo/Pagination'
 import Tree from '@/components/elemDemo/Tree'
+import Menu from '@/components/elemDemo/Menu'
 import PropParent from '@/components/vue2.0Demo//prop/parent'
 
 Vue.use(Router)
@@ -19,7 +20,8 @@ let elementSubRoutes = [
   {path: 'Tooltip', component: Tooltip},
   {path: 'Table', component: Table},
   {path: 'Pagination', component: Pagination},
-  {path: 'Tree', component: Tree}
+  {path: 'Tree', component: Tree},
+  {path: 'Menu', component: Menu}
 ]
 
 export default new Router({
